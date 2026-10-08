@@ -1,0 +1,63 @@
+# The inputs of this release: what cgofree generated this repository's
+# packages from, and what it measured. Written by cgofree release; do not edit.
+format_version = 1
+library = "tree-sitter"
+repository = "tree-sitter-go"
+recipe_sha256 = "288d0cd802672a095c790fde40a4f38d80edcb31dbc6f460ca5911a083ae4017"
+
+[upstream]
+name = "tree-sitter-go"
+url = "https://github.com/tree-sitter/tree-sitter-go"
+tag = "v0.25.0"
+commit = "1547678a9da59885853f5f5cc8a99cc203fa2e2c"
+
+[runtime]
+module = "github.com/cgofree/tree-sitter"
+version = "v0.1.0"
+
+[translator]
+module = "github.com/stricttools/wasm-to-go"
+version = "v0.5.0"
+commit = "2f70806c64d1454e63929d41df93867884702896"
+passes = [
+  "wasm-opt --low-memory-unused --converge -O4 --enable-mutable-globals --enable-multivalue --enable-nontrapping-float-to-int --enable-sign-ext --enable-reference-types --enable-bulk-memory --enable-extended-const --strip --strip-producers",
+  "libc-gen (runtime)",
+  "libc-gen (grammars) -deref-mem",
+  "wasm2go -embed -unsafe",
+]
+
+[[toolchains]]
+name = "wasi-sdk"
+version = "34.0"
+sha256 = "b761e3a0721dbae9c09a0059e5fdb2bf917d1b4a8a7b430fb3b5aafb0984b2c4"
+
+[[toolchains]]
+name = "binaryen"
+version = "133"
+sha256 = "2dc9c7813f5375db93d96ead4b78222fcc3e2677bbb832297af4797782a37489"
+
+[[packages]]
+import_path = "github.com/cgofree/tree-sitter-go"
+sha256 = "08ce9c9bb7ae8f4fba0fc9299c2a9223f188bbd5f4a44fdb97bf574c5698f046"
+wasm_bytes = 225450
+go_bytes = 558586
+api = [
+  "func Language() *treesitter.Language",
+  "translated: func (*Module) X__wasm_apply_data_relocs()",
+  "translated: func (*Module) Xtree_sitter_go() int32",
+  "translated: func DylinkInfo() (int64, int64, int64, int64)",
+  "translated: func New(Xenv) *Module",
+  "translated: type Memory = interface { Slice() *[]byte Grow(delta, max int64) int64 }",
+  "translated: type Module struct",
+  "translated: type Xenv = interface { X__indirect_function_table() *[]any X__memory_base() *int32 X__table_base() *int32 Xmemory() Memory }",
+]
+
+[verification]
+native_compiler = "cc (GCC) 16.2.1 20260819 (Red Hat 16.2.1-2)"
+inputs_sha256 = "b6917cf8470a92408fd8dc590445f6502239633700bd926908bbb1391c467661"
+
+[[verification.grammars]]
+name = "go"
+files = 8139
+bytes = 91061627
+api_files = 204
